@@ -11,13 +11,16 @@ const CommentBox = () => {
   const PostID = searchParams.get("id");
 
   const newCommentData = () => {
+    const date= new Date().getFullYear;
     const data = {
       fields: {
         commenterName: commenterName,
         comment: commnetText,
         postID: `${PostID}`,
+        commentDate: date,
       },
     };
+
     setCommenterName("");
     setCommentText("");
     insertData(data);
