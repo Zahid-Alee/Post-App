@@ -10,8 +10,8 @@ export default function PostItem() {
   const PostID = searchParams.get("id");
 
   // fetching data through from a specific record id
-  const fetchData = (url) => {
-    return fetch(url)
+  const fetchData = async(url) => {
+    return await fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setPostData(data.fields);
@@ -23,34 +23,17 @@ export default function PostItem() {
       `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
     );
   }, []);
-  // let likes=0
-  // const [likes,setLikes]=useState([]);
 
-  //  const incrementLikes=()=>{
-  //   setLikes(likes.push('#'));
-  //    localStorage.setItem('likes',likes);
-  // }
-
-  const [postLikes, setPostLikes] = useState("");
-  useEffect(() => {
-    const likes = localStorage.getItem(`${PostID}`);
-    if (likes) {
-      setPostLikes(likes);
-    }
-  }, []);
 
   const handleLike = () => {
-    // Increment the number of likes by 1
-    const newLikes = postLikes + "test@gmail.com,";
-    setPostLikes(newLikes);
-    // Store the number of likes in local storage
-    localStorage.setItem(`${PostID}`, newLikes);
+    // Increment the number of likes by adding dummy email
+    const newLikes = postData?.Likes + "test@gmail.com,";
     updateLikesField(`${PostID}`, newLikes);
   };
 
   const updateLikesField = async (recordId, newLikesValue) => {
     try {
-      const response = await fetch(
+       await fetch(
         `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${recordId}`,
         {
           method: "PATCH",
@@ -65,8 +48,10 @@ export default function PostItem() {
           }),
         }
       );
-      const data = await response.json();
-      console.log(data);
+      fetchData(
+        `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
+      );
+
     } catch (error) {
       console.error(error);
     }
@@ -94,13 +79,14 @@ export default function PostItem() {
                   onClick={handleLike}
                 >
                   <i className="bi bi-hand-thumbs-up me-2"></i>{" "}
-                  <span>{postLikes.split(",").length - 1}</span> Like
+                  <span>{postData.Likes?postData.Likes.split(",").length - 1:0}</span> Like
                 </button>
               </div>
 
               <hr className="my-4" />
-              
-              <CommentContainer/>
+
+              <CommentContainer />
+
             </div>
           </div>
         </div>
