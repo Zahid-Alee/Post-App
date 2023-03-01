@@ -57,12 +57,9 @@ const CommentBox = () => {
 
   return (
     <>
-      
-    
-      {commentData ? (
-        
+      {commentData && PostID ? (
         commentData.map((elements) => {
-          
+          if (elements.fields.postID == PostID) {
             return (
               <Comments
                 key={elements.id}
@@ -70,7 +67,7 @@ const CommentBox = () => {
                 comments={elements.fields.comment}
               />
             );
-          
+          }
         })
       ) : (
         <h4>Fetching...</h4>
