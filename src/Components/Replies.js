@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react'
 
-export default function Replies() {
+export default function Replies(props) {
   return (
     <>
-      <div className="container  border ">
-        <strong className="small"> zahid </strong>
-        <span className="text-warning">{"----->"}</span>
-        <span className="small">2010</span>
-        <p className="commentText">hello how are you </p>
+    <div className="container  my-3 border ">
+        <strong className="small"> {props.repliesData.fields.commenterName} </strong>
+        <span className="text-warning">{"----->"} </span>
+        <span className="small">{props.repliesData.fields.commentDate}</span>
+        <p className="commentText">{props.repliesData.fields.comment} </p>
+        {/* <RepliesContainer/> */}
       </div>
     </>
-  );
+  )
 }

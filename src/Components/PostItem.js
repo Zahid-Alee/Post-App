@@ -14,7 +14,7 @@ export default function PostItem() {
       .then((response) => response.json())
       .then((data) => {
         setPostData(data.fields);
-        console.log(data.fields);
+  ;
       });
   };
 

@@ -5,7 +5,6 @@ const CommentBox = () => {
   const [commenterName, setCommenterName] = useState("");
   const [commnetText, setCommentText] = useState("");
   const [commentData, setCommentData] = useState([]);
-  // const commentForm=document.querySelector('form')
 
   const searchParams = new URLSearchParams(window.location.search);
   const PostID = searchParams.get("id");
@@ -16,7 +15,7 @@ const CommentBox = () => {
       fields: {
         commenterName: commenterName,
         comment: commnetText,
-        postID: `${PostID}`,
+        parentID: `${PostID}`,
         commentDate: date,
       },
     };
@@ -38,8 +37,6 @@ const CommentBox = () => {
       fetchData(
         "https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Comments/?api_key=key15JO6J5kG6vX6r"
       );
-      // const data = await response.json();
-      // console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -63,27 +60,24 @@ const CommentBox = () => {
       <h3>Comments:</h3>
       {commentData.length > 0 ? (
         commentData.map((elements) => {
-          if (elements.fields.postID == PostID) {
+          if (elements.fields.parentID == PostID) {
             return (
               <Comments
+                commentData={elements}
                 key={elements.id}
-                commenterName={elements.fields.commenterName}
-                comments={elements.fields.comment}
-                commentsDate={elements.fields.commentDate}
+                postID={PostID}
+                commentID={elements.id}
               />
             );
           }
         })
       ) : (
-        <div className="d-flex justify-content-center align-items-center my-5">
-          <strong> Loading Comments </strong>
-          <div className="spinner-border text-warning m-4"></div>
-        </div>
+        <div></div>
       )}
 
       {/* comments form */}
 
-      <form className="commentForm border  p-2">
+      <form className="commentForm border border-primary  p-2">
         <div className="form-group m-2">
           <label htmlFor="name">
             <b>Name:</b>
