@@ -76,9 +76,9 @@ const CommentBox = () => {
         })
       ) : (
         <div className="d-flex justify-content-center align-items-center my-5">
-        <strong> Loading Comments </strong>
-        <div className="spinner-border text-warning m-4"></div>
-      </div>
+          <strong> Loading Comments </strong>
+          <div className="spinner-border text-warning m-4"></div>
+        </div>
       )}
 
       {/* comments form */}
