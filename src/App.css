@@ -3,3 +3,12 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* PostItemSpinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+.commentText{
+  background-color: #6c757d33;
+  margin: 1px;
+}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CommentContainer from "./CommentContainer";
 
-
 export default function PostItem() {
   const [postData, setPostData] = useState({});
 
@@ -10,11 +9,12 @@ export default function PostItem() {
   const PostID = searchParams.get("id");
 
   // fetching data through from a specific record id
-  const fetchData = async(url) => {
+  const fetchData = async (url) => {
     return await fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setPostData(data.fields);
+        console.log(data.fields);
       });
   };
 
@@ -24,16 +24,22 @@ export default function PostItem() {
     );
   }, []);
 
-
   const handleLike = () => {
     // Increment the number of likes by adding dummy email
-    const newLikes = postData?.Likes + "test@gmail.com,";
-    updateLikesField(`${PostID}`, newLikes);
+    let newLikes = "";
+
+    if (postData.Likes) {
+      newLikes = postData.Likes + "test@gmail.com,";
+      updateLikesField(`${PostID}`, newLikes);
+    } else {
+      newLikes = "test@gmail.com,";
+      updateLikesField(`${PostID}`, newLikes);
+    }
   };
 
   const updateLikesField = async (recordId, newLikesValue) => {
     try {
-       await fetch(
+      await fetch(
         `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${recordId}`,
         {
           method: "PATCH",
@@ -51,14 +57,13 @@ export default function PostItem() {
       fetchData(
         `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
       );
-
     } catch (error) {
       console.error(error);
     }
   };
   return (
     <>
-      {postData ? (
+      {Object.keys(postData).length > 0 ? (
         <div className="container">
           <div className="row">
             <div className="col-md-8 offset-md-2">
@@ -75,23 +80,28 @@ export default function PostItem() {
               <p>{postData.content}</p>
               <div className="d-flex justify-content-between align-items-center">
                 <button
-                  className="btn btn-outline-primary"
+                  className="btn btn-outline-warning"
                   onClick={handleLike}
                 >
                   <i className="bi bi-hand-thumbs-up me-2"></i>{" "}
-                  <span>{postData.Likes?postData.Likes.split(",").length - 1:0}</span> Like
+                  <span>
+                    {postData.Likes ? postData.Likes.split(",").length - 1 : 0}
+                  </span>{" "}
+                  Like
                 </button>
               </div>
 
               <hr className="my-4" />
 
               <CommentContainer />
-
             </div>
           </div>
         </div>
       ) : (
-        <h3 className="text-light">Fetching..</h3>
+        <div className="d-flex justify-content-center align-items-center my-5">
+          <strong> Loading Post </strong>
+          <div className="spinner-border text-warning m-4"></div>
+        </div>
       )}
     </>
   );

@@ -11,7 +11,7 @@ const CommentBox = () => {
   const PostID = searchParams.get("id");
 
   const newCommentData = () => {
-    const date= new Date().getFullYear;
+    const date = new Date().toISOString();
     const data = {
       fields: {
         commenterName: commenterName,
@@ -60,7 +60,8 @@ const CommentBox = () => {
 
   return (
     <>
-      {commentData && PostID ? (
+      <h3>Comments:</h3>
+      {commentData.length > 0 ? (
         commentData.map((elements) => {
           if (elements.fields.postID == PostID) {
             return (
@@ -68,23 +69,29 @@ const CommentBox = () => {
                 key={elements.id}
                 commenterName={elements.fields.commenterName}
                 comments={elements.fields.comment}
+                commentsDate={elements.fields.commentDate}
               />
             );
           }
         })
       ) : (
-        <h4>Fetching...</h4>
+        <div className="d-flex justify-content-center align-items-center my-5">
+        <strong> Loading Comments </strong>
+        <div className="spinner-border text-warning m-4"></div>
+      </div>
       )}
 
       {/* comments form */}
 
-      <form className="commentForm">
+      <form className="commentForm border  p-2">
         <div className="form-group m-2">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">
+            <b>Name:</b>
+          </label>
         </div>
         <div className="form-group">
           <input
-            className="form-control m-2"
+            className="form-control"
             id="name"
             placeholder="Enter your name"
             value={commenterName}
@@ -92,10 +99,12 @@ const CommentBox = () => {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="comment">Comment:</label>
+        <div className="form-group ">
+          <label htmlFor="comment">
+            <b>Comment:</b>
+          </label>
           <textarea
-            className="form-control m-2"
+            className="form-control"
             id="comment"
             rows="3"
             value={commnetText}
