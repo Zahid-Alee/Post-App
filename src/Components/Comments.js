@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Replies from './Replies';
 
 export default function Comments(props) {
 
@@ -18,8 +19,10 @@ export default function Comments(props) {
       <strong className='small'> {props.commenterName} </strong><span className='text-warning'>{'----->'} </span>
       <span className='small'>{props.commentsDate}</span>
       <p className='commentText'>{props.comments} </p>
+      <Replies/>
       <strong style={replyButtonStyle}
       onClick={popUpReply}> Reply</strong>
+       
       {toogleReply?
        <div className="form-group ">
        <label htmlFor="comment">
