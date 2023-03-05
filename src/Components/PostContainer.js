@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { FetchApiContext } from "../Context/FetchDataContext";
 import Post from "./Posts";
 
 export default function PostContainer() {
-  const [postData, setPostData] = useState([]);
-
-  const fetchData = async (url) => {
-    return await fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setPostData(data.records);
-      });
-  };
+  const { data, fetchData } = useContext(FetchApiContext);
+    
 
   useEffect(() => {
     fetchData(
@@ -23,8 +17,8 @@ export default function PostContainer() {
       <div className="container my-4">
         <h1 className="text-center text-dark">Blog Post</h1>
         <div className="row d-flex justify-content-center">
-          {postData.length > 0 ? (
-            postData.map((post) => {
+          {data?.records?.length > 0 ? (
+            data.records.map((post) => {
               return (
                 <div className="col-auto" key={post.id}>
                   <Post

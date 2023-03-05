@@ -1,93 +1,89 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { FetchApiContext } from "../Context/FetchDataContext";
+import { PostApiContext } from "../Context/PostDataContext";
 import CommentContainer from "./CommentContainer";
 
 export default function PostItem() {
-  const [postData, setPostData] = useState({});
-
+  const { data, fetchData } = useContext(FetchApiContext);
   //geting id from the url
   const searchParams = new URLSearchParams(window.location.search);
   const PostID = searchParams.get("id");
 
-  // fetching data through from a specific record id
-  const fetchData = async (url) => {
-    return await fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setPostData(data.fields);
-  ;
-      });
-  };
+  const [showLikes, setShowLikes] = useState(0);
+
+  const postData = useContext(PostApiContext);
 
   useEffect(() => {
     fetchData(
       `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
     );
+    // setShowLikes(data.fields.Likes.split(",").length - 1);
   }, []);
 
   const handleLike = () => {
     // Increment the number of likes by adding dummy email
+    setShowLikes(showLikes + 1);
     let newLikes = "";
+    const apiKey = "key15JO6J5kG6vX6r";
+    let newData = {};
+    if (data.fields.Likes) {
+      newLikes = data.fields.Likes + "test@gmail.com,";
 
-    if (postData.Likes) {
-      newLikes = postData.Likes + "test@gmail.com,";
-      updateLikesField(`${PostID}`, newLikes);
+      newData = {
+        Likes: newLikes,
+      };
+      updateLikesField(
+        `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}`,
+        newData,
+        apiKey
+      );
     } else {
       newLikes = "test@gmail.com,";
-      updateLikesField(`${PostID}`, newLikes);
+      newData = {
+        Likes: newLikes,
+      };
+      updateLikesField(
+        `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}`,
+        newData,
+        apiKey
+      );
     }
   };
 
-  const updateLikesField = async (recordId, newLikesValue) => {
+  const updateLikesField = async (url, newData, api_key) => {
     try {
-      await fetch(
-        `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${recordId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer key15JO6J5kG6vX6r`,
-          },
-          body: JSON.stringify({
-            fields: {
-              Likes: newLikesValue,
-            },
-          }),
-        }
-      );
+      await postData(url, newData, api_key);
       fetchData(
         `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
       );
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
   return (
     <>
-      {Object.keys(postData).length > 0 ? (
+      {data && data.fields ? (
         <div className="container">
           <div className="row">
             <div className="col-md-8 offset-md-2">
-              <h1 className="mt-4 mb-3 text-center">{postData.title}</h1>
+              <h1 className="mt-4 mb-3 text-center">{data.fields.title}</h1>
               <img
                 className="img-fluid d-block mx-auto mb-4"
-                src={postData.cover_image}
+                src={data.fields.cover_image}
                 alt="Post"
               />
               <p className="text-muted text-center mb-2">
-                By <span>{postData.author_name}</span> |{" "}
-                {postData.published_date}
+                By <span>{data.fields.author_name}</span> |{" "}
+                {data.published_date}
               </p>
-              <p>{postData.content}</p>
+              <p>{data.fields.content}</p>
               <div className="d-flex justify-content-between align-items-center">
                 <button
                   className="btn btn-outline-warning"
                   onClick={handleLike}
                 >
                   <i className="bi bi-hand-thumbs-up me-2"></i>{" "}
-                  <span>
-                    {postData.Likes ? postData.Likes.split(",").length - 1 : 0}
-                  </span>{" "}
-                  Like
+                  <span>{data.fields.Likes.split(",").length - 1}</span> Like
                 </button>
               </div>
 

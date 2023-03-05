@@ -65,7 +65,7 @@ export default function RepliesContainer(props) {
     <>
       {repliesData.length > 0 ? (
         repliesData.map((elements) => {
-          if (elements.fields.parentID == props.commentID) {
+          if (elements.fields.parentID === props.commentID) {
             return <Replies repliesData={elements} key={elements.id} />;
           }
         })
