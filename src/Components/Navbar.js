@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
 
 export default function Navbar() {
   const [expanded, setExpanded] = useState(false);
+
+  const AuthState= useContext(AuthContext);
+  // const Logout=()=>{}
 
   const toggleNavbar = () => {
     setExpanded(!expanded);
@@ -62,8 +67,12 @@ export default function Navbar() {
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#signup">
-                <button className=" btn btn-warning  text-light">
-                  Sign Up
+                <button className=" btn btn-warning  text-light" onClick={()=>{
+                  localStorage.removeItem('token');
+                  <Navigate to={'/login'}/>
+                  console.log('logout')
+                }}  >
+                   Logout
                 </button>
               </a>
             </li>

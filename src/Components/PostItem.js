@@ -83,7 +83,7 @@ export default function PostItem() {
                   onClick={handleLike}
                 >
                   <i className="bi bi-hand-thumbs-up me-2"></i>{" "}
-                  <span>{data.fields.Likes.split(",").length - 1}</span> Like
+                  <span>{data.fields.Likes?.split(",").length - 1}</span> Like
                 </button>
               </div>
 
