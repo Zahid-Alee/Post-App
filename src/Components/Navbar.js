@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 
-export default function Navbar() {
+export default function Navbar(props) {
   const [expanded, setExpanded] = useState(false);
 
   const AuthState= useContext(AuthContext);
   // const Logout=()=>{}
-
+  const navigate=useNavigate()
   const toggleNavbar = () => {
     setExpanded(!expanded);
   };
@@ -46,35 +46,31 @@ export default function Navbar() {
                 Dropdown
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#action1">
-                  Action 1
-                </a>
-                <a className="dropdown-item" href="#action2">
-                  Action 2
-                </a>
+                
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#action3">
-                  Action 3
-                </a>
+               
               </div>
             </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="#login">
                 <button className=" btn btn-warning text-light">Login</button>
-              </a>
+            
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#signup">
                 <button className=" btn btn-warning  text-light" onClick={()=>{
                   localStorage.removeItem('token');
-                  <Navigate to={'/login'}/>
+                  navigate('/')
                   console.log('logout')
                 }}  >
-                   Logout
+
+                  {props.loginState?
+                  
+                <>Logout</>:
+                <>Login</>}
+    
                 </button>
-              </a>
+            
             </li>
           </ul>
         </div>

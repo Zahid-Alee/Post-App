@@ -10,30 +10,26 @@ import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import { AuthContext, AuthContextProvider } from "./Context/AuthContext";
 import { Navigate } from "react-router-dom";
-import { AuthControl } from "./Components/AuthControl";
+import AuthControl from "./Components/AuthControl";
 
-
-// localStorage.clear()
 function App() {
+  // localStorage.clear()
+  const AuthState= useContext(AuthContext)
+  const [isLogin, setIsLogin] = useState(AuthState.refreshUser());
+
+  useEffect(() => {
+    setIsLogin(AuthState.refreshUser());
+  }, [isLogin]);
   return (
     <>
       <FetchContextProvider>
         <PostContextProvider>
           <Router>
-            <Navbar />
+            <Navbar loginState={isLogin} />
             <Routes>
               {/* <Route exact path="/" element={<AuthControl/>} /> */}
-              <Route
-                exact
-                path="/"
-                element={<AuthControl component={PostContainer} />}
-              />
-              <Route
-                exact
-                path="/post"
-                element={<AuthControl component={PostItem} />}
-              />
-
+              <Route exact path="/" element={isLogin?<PostContainer/>:<Navigate to={'/login'}/>}/>
+              <Route exact path="/post" element={isLogin?<PostItem/>:<Navigate to={'/login'}/>} />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<SignUp />} />
             </Routes>

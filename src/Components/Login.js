@@ -19,7 +19,7 @@ export default function Login() {
       .then((data) => {
         localStorage.setItem("token", data.token);
         console.log(data.token);
-        <Navigate to={'/'}/>
+        navigate('/')
         
       })
       .catch((error) => console.log(error));
