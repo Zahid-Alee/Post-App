@@ -52,7 +52,7 @@ export default function PostItem() {
 
   const updateLikesField = async (url, newData, api_key) => {
     try {
-      await postData(url, newData, api_key);
+      await postData(url, newData, api_key,'PATCH');
       fetchData(
         `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
       );

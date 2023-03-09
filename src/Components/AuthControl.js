@@ -2,16 +2,24 @@ import React, { useContext,useState,useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 
-export default function AuthControl() {
-  const Authstate = useContext(AuthContext);
+export default function AuthControl(props) {
+  const checkUser = useContext(AuthContext);
+  
+  const checkLogin=()=>{
+    return checkUser()
+  }
+  const [isLogin,setIsLogin]=useState(checkLogin())
 
-  const [isLogin, setIsLogin] = useState(Authstate.refreshUser());
 
-  useEffect(() => {
-    setIsLogin(Authstate.refreshUser());
-  }, [isLogin]);
+ useEffect(()=>{
+setIsLogin(checkLogin())
+  
+
+ },[])
+// const authState = useContext(AuthContext);
+// const isLogin= authState.is;
  
-//   console.log(isLogin)
+  console.log(isLogin)
 
   return(
     <>

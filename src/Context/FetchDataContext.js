@@ -10,7 +10,7 @@ export const FetchContextProvider = ({ children }) => {
         const response = await fetch(url);
         const data = await response.json();
         setData(data);
-        console.log(data)
+        // console.log(data)
         return data;
       };
       

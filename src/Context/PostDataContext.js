@@ -2,9 +2,9 @@ import { createContext } from "react";
 
 export const PostApiContext = createContext();
 export const PostContextProvider = ({ children }) => {
-  const postData = (url, data, api_key) => {
+  const postData = (url, data, api_key,method) => {
     fetch(url, {
-      method: "PATCH",
+      method: `${method}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${api_key}`,

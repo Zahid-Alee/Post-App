@@ -14,22 +14,22 @@ import AuthControl from "./Components/AuthControl";
 
 function App() {
   // localStorage.clear()
-  const AuthState= useContext(AuthContext)
-  const [isLogin, setIsLogin] = useState(AuthState.refreshUser());
+  // const AuthState= useContext(AuthContext)
+  // const [isLogin, setIsLogin] = useState(AuthState.refreshUser());
 
-  useEffect(() => {
-    setIsLogin(AuthState.refreshUser());
-  }, [isLogin]);
+  // useEffect(() => {
+  //   setIsLogin(AuthState.refreshUser());
+  // }, [isLogin]);
   return (
     <>
       <FetchContextProvider>
         <PostContextProvider>
           <Router>
-            <Navbar loginState={isLogin} />
+            <Navbar  />
             <Routes>
-              {/* <Route exact path="/" element={<AuthControl/>} /> */}
-              <Route exact path="/" element={isLogin?<PostContainer/>:<Navigate to={'/login'}/>}/>
-              <Route exact path="/post" element={isLogin?<PostItem/>:<Navigate to={'/login'}/>} />
+              <Route exact path="/" element={<AuthControl/>} />
+              <Route exact path="/posts" element={<PostContainer/>}/>
+              <Route exact path="/post" element={<PostItem/>} />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<SignUp />} />
             </Routes>
