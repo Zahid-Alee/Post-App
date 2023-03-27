@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, React, useEffect } from "react";
+import React  from "react";
 import "./App.css";
 import PostContainer from "./Components/PostContainer";
 import PostItem from "./Components/PostItem";
@@ -8,18 +8,11 @@ import { FetchContextProvider } from "./Context/FetchDataContext";
 import { PostContextProvider } from "./Context/PostDataContext";
 import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
-import { AuthContext, AuthContextProvider } from "./Context/AuthContext";
-import { Navigate } from "react-router-dom";
-import AuthControl from "./Components/AuthControl";
+
+import { Auth } from "./middleware/Auth";
 
 function App() {
-  // localStorage.clear()
-  // const AuthState= useContext(AuthContext)
-  // const [isLogin, setIsLogin] = useState(AuthState.refreshUser());
 
-  // useEffect(() => {
-  //   setIsLogin(AuthState.refreshUser());
-  // }, [isLogin]);
   return (
     <>
       <FetchContextProvider>
@@ -27,9 +20,9 @@ function App() {
           <Router>
             <Navbar  />
             <Routes>
-              <Route exact path="/" element={<AuthControl/>} />
-              <Route exact path="/posts" element={<PostContainer/>}/>
-              <Route exact path="/post" element={<PostItem/>} />
+              <Route exact path="/" element={Auth(PostContainer)} />
+              {/* <Route exact path="/posts" element={}/> */}
+              <Route exact path="/post" element={Auth(PostItem)} />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<SignUp />} />
             </Routes>
@@ -40,10 +33,4 @@ function App() {
   );
 }
 
-export default function AppWithAuth() {
-  return (
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
-  );
-}
+export default App;

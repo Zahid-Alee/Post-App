@@ -25,7 +25,7 @@ setIsLogin(checkLogin())
     <>
     {
         isLogin?
-        <Navigate to={'/posts'} />
+        <Navigate to={'/'} />
         :
         <Navigate to={'/login'} />
 

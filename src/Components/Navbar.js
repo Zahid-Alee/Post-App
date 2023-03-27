@@ -1,15 +1,22 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
+// import { logout } from "../middleware/Auth";
+// import { AuthContext } from "../Context/AuthContext";
 
 export default function Navbar(props) {
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
+  const checkUser = () => {
 
-  const checkUser = useContext(AuthContext);
+    if (localStorage.getItem('token')) return true;
+    else return false;
+
+  }
+
 
   // const Logout=()=>{}
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const toggleNavbar = () => {
     setExpanded(!expanded);
   };
@@ -53,20 +60,15 @@ export default function Navbar(props) {
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
-              {checkUser() ? (
-                <button
-                  className=" btn btn-warning  text-light"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    navigate("/");
-                    console.log("logout");
-                  }}
-                >Logout</button>
-              ) : (
-                <button className="btn  btn-warning text-light" onClick={()=>{
-                  navigate('/signup')
-                }}>SignUp</button>
-              )}
+
+              <button
+                className=" btn btn-warning  text-light"
+                onClick={() => {
+                  console.log('Removing token from localStorage');
+                  // localStorage.removeItem('token')
+                }}
+              >Logout</button>
+
             </li>
           </ul>
         </div>

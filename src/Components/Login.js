@@ -19,9 +19,9 @@ export default function Login() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem("token", data.token);
-          // < to={"/"} />;
           navigate('/')
-          console.log(data.token)
+          // return <Navigate to={'/'}/>
+          // console.log(data.token)
         }
       })
       .catch((error) => console.log(error));
