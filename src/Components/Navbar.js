@@ -64,7 +64,7 @@ export default function Navbar(props) {
               <button
                 className=" btn btn-warning  text-light"
                 onClick={() => {
-                  console.log('Removing token from localStorage');
+                  if(localStorage.getItem('token')){ localStorage.removeItem('token'); navigate('/login')}
                   // localStorage.removeItem('token')
                 }}
               >Logout</button>

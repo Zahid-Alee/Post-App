@@ -9,20 +9,23 @@ export default function PostItem() {
   const searchParams = new URLSearchParams(window.location.search);
   const PostID = searchParams.get("id");
 
-  const [showLikes, setShowLikes] = useState(0);
+  const [likes, setLikes] = useState(0);
 
   const postData = useContext(PostApiContext);
+  const setPostData= async ()=>{
+   await fetchData(
+      `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
+    )
+  }
 
   useEffect(() => {
-    fetchData(
-      `https://api.airtable.com/v0/appYp6Kk4gEM1SMyc/Posts/${PostID}/?api_key=key15JO6J5kG6vX6r`
-    );
+   setPostData();
     // setShowLikes(data.fields.Likes.split(",").length - 1);
   }, []);
 
   const handleLike = () => {
     // Increment the number of likes by adding dummy email
-    setShowLikes(showLikes + 1);
+    // setShowLikes(showLikes + 1);
     let newLikes = "";
     const apiKey = "key15JO6J5kG6vX6r";
     let newData = {};
@@ -83,7 +86,7 @@ export default function PostItem() {
                   onClick={handleLike}
                 >
                   <i className="bi bi-hand-thumbs-up me-2"></i>{" "}
-                  <span>{data.fields.Likes?.split(",").length - 1}</span> Like
+                  <span>{data.fields.Likes?(data.fields?.Likes?.split(",").length - 1):0}</span> Like
                 </button>
               </div>
 
@@ -94,6 +97,7 @@ export default function PostItem() {
           </div>
         </div>
       ) : (
+        //loader
         <div className="d-flex justify-content-center align-items-center my-5">
           <strong> Loading Post </strong>
           <div className="spinner-border text-warning m-4"></div>

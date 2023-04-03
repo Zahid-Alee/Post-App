@@ -10,15 +10,6 @@ app.use(body_parser.urlencoded({ extended: true }));
 app.use(body_parser.json());
 app.use(cors());
 
-let userData = [
-  { email: "user1@gmail.com", password: "password1", id: "id1" },
-  {
-    email: "user2@gmail.com",
-    password: "password2",
-    id: "id2",
-  },
-];
-
 app.get("/api", (req, res) => {
   const data = { message: "Data received!" };
   res.json(data);
